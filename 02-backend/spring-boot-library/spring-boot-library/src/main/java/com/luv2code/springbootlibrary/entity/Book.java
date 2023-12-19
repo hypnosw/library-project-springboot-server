@@ -2,8 +2,6 @@ package com.luv2code.springbootlibrary.entity;
 
 import lombok.Data;
 import javax.persistence.*;
-
-
 @Entity
 @Table(name ="book")
 @Data
