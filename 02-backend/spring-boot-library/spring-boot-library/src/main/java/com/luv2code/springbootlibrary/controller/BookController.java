@@ -27,21 +27,22 @@ public class BookController {
     // secure means we need to be authenticated
     @PutMapping("/secure/checkout")
     public Book checkoutBook(@RequestParam Long bookId,
-                             @RequestHeader(value="Authorization") String token) throws Exception{
-        String userEmail = ExtractJWT.payloadJWTExtraction(token);
+                             @RequestHeader("Authorization") String token) throws Exception{
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.checkoutBook(userEmail, bookId);
     }
 
     @GetMapping("/secure/ischeckedout/byuser")
     public Boolean checkoutBookByUser(@RequestParam Long bookId,
-                                      @RequestHeader(value="Authorization") String token){
-        String userEmail = ExtractJWT.payloadJWTExtraction(token);
+                                      @RequestHeader("Authorization") String token){
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.checkoutBookByUser(userEmail, bookId);
     }
 
     @GetMapping("/secure/currentloans/count")
-    public int currentLoansCount(@RequestHeader(value="Authorization") String token){
-        String userEmail = ExtractJWT.payloadJWTExtraction(token);
+    public int currentLoansCount(@RequestHeader("Authorization") String token){
+        System.out.println(token);
+        String userEmail = ExtractJWT.payloadJWTExtraction(token, "\"sub\"");
         return bookService.currentLoansCount(userEmail);
     }
 }

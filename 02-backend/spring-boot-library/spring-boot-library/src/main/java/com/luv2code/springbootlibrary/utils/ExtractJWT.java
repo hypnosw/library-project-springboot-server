@@ -6,19 +6,19 @@ import java.util.Map;
 
 public class ExtractJWT {
 
-    public static String payloadJWTExtraction (String token){
-        token.replace("Bearer ", "");
+    public static String payloadJWTExtraction (String token, String extraction){
+        System.out.println(token);
+        token = token.replace("Bearer ", "");
 
         // splitting string into 3 elements
         // first element being header
         // second element being payload
         // third element being signature
         String[] chunks = token.split("\\.");
-
         // creating a decoder to decode the JWT
         Base64.Decoder decoder = Base64.getUrlDecoder();
 
-        // extrating the payload out
+        // extracting the payload out
         String payload = new String(decoder.decode(chunks[1]));
 
         String[] entries = payload.split(",");
@@ -26,7 +26,7 @@ public class ExtractJWT {
 
         for(String entry : entries){
             String[] keyValue = entry.split(":");
-            if(keyValue[0].equals("\"sub\"")) {
+            if(keyValue[0].equals(extraction)) {
 
                 int remove = 1;
 
@@ -42,8 +42,8 @@ public class ExtractJWT {
 
 
         }
-        if(map.containsKey("\"sub\"")){
-            return map.get("\"sub\"");
+        if(map.containsKey(extraction)){
+            return map.get(extraction);
         }
         return null;
     }
